@@ -11,10 +11,6 @@ const retry = require('p-retry')
 const isPrivateIp = require('private-ip')
 const pkg = require('../package.json')
 
-const randomHighPortNumber = (min = 1024, max = 49151) => {
-  return Math.round(Math.random() * (max - min) + min)
-}
-
 class NatManager {
   /**
    * @class
@@ -83,12 +79,10 @@ class NatManager {
         throw new Error(`${publicIp} is private - please set config.nat.externalIp to an externally routable IP or ensure you are not behind a double NAT`)
       }
 
-      const publicPort = randomHighPortNumber()
-
-      log(`opening uPnP connection from ${publicIp}:${publicPort} to ${host}:${port}`)
+      log(`opening uPnP connection from ${publicIp}:${port} to ${host}:${port}`)
 
       await client.map({
-        publicPort,
+        publicPort: port,
         privatePort: port,
         protocol: transport.toUpperCase()
       })
@@ -96,7 +90,7 @@ class NatManager {
       this._addressManager.announce.add(Multiaddr.fromNodeAddress({
         family: 'IPv4',
         address: publicIp,
-        port: publicPort
+        port
       }, transport))
     }
   }
