@@ -12,8 +12,8 @@ FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
 
 # [Optional] Uncomment if you want to install more global node modules
 COPY package.json /tmp
-RUN sudo -u node mkdir -p /projectspace \
+RUN mkdir -p /projectspace \
     && mv /tmp/package.json /projectspace \
     && cd /projectspace \
-    && sudo -u node npm install
+    && npm install
 # RUN sudo -u node npm install -g <your-package-list-here>
