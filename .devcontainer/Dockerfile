@@ -14,6 +14,7 @@ FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
 COPY package.json /tmp
 RUN mkdir -p /projectspace \
     && mv /tmp/package.json /projectspace \
+    && chown -R node:node /projectspace \
     && cd /projectspace \
-    && npm install
+    && sudo -u node npm install
 # RUN sudo -u node npm install -g <your-package-list-here>
